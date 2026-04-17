@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Alembic — keep versions, ignore local artifacts
+migrations/versions/__pycache__/
+
+# Logs
+*.log
+
+# Docker
+.dockerignore
+
+# Claude local overrides (keep shared config tracked)
+.claude/settings.local.json

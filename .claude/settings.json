@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(ruff check:*)",
+      "Bash(ruff format:*)",
+      "Bash(mypy:*)",
+      "Bash(pytest:*)",
+      "Bash(alembic:*)",
+      "Bash(uv:*)",
+      "Bash(pip install:*)",
+      "Bash(docker compose:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(alembic upgrade:*)",
+      "Bash(alembic downgrade:*)",
+      "Bash(docker compose down:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git push --force:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/format-python.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/bash-preflight.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/quality-gate.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONUNBUFFERED": "1"
+  }
+}
