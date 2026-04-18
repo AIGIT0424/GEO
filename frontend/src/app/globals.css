@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 224 76% 48%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 76% 48%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground antialiased; }
+}
+
+/* Metric card glow on hover */
+.metric-card:hover { box-shadow: 0 0 0 2px hsl(224 76% 48% / 0.2); }
+
+/* Shimmer skeleton */
+.skeleton {
+  background: linear-gradient(90deg, hsl(220 14% 96%) 25%, hsl(220 14% 92%) 50%, hsl(220 14% 96%) 75%);
+  background-size: 200px 100%;
+  @apply animate-shimmer rounded;
+}
+
+/* ACoS / ROAS colour coding */
+.acos-good  { @apply text-emerald-600 font-semibold; }
+.acos-warn  { @apply text-amber-600 font-semibold; }
+.acos-bad   { @apply text-red-600 font-semibold; }
+.roas-good  { @apply text-emerald-600 font-semibold; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-transparent; }
+::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
