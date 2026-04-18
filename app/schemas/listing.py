@@ -42,3 +42,19 @@ class ListingVariantRead(BaseModel):
     bullet_points: list[str] | None
     description: str | None
     ai_model: str | None
+
+
+class ComplianceIssue(BaseModel):
+    field: str
+    issue: str | None = None
+    suggestion: str
+
+
+class ListingComplianceResult(BaseModel):
+    listing_id: uuid.UUID
+    verdict: str  # APPROVED | REQUEST_CHANGES
+    blockers: list[ComplianceIssue]
+    major_issues: list[ComplianceIssue]
+    minor_suggestions: list[ComplianceIssue]
+    keyword_coverage_pct: float
+    overall_score: float

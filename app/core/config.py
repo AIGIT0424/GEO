@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     amazon_aws_secret_key: str = ""
     amazon_role_arn: str = ""
     amazon_marketplace_id: str = "ATVPDKIKX0DER"
+    # OAuth redirect URI registered in Amazon Developer Console
+    amazon_oauth_redirect_uri: str = "http://localhost:8000/api/v1/amazon/oauth/callback"
 
     # Amazon Advertising API
     amazon_ads_client_id: str = ""

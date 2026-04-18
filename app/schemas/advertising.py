@@ -54,3 +54,37 @@ class AdOptimizationResult(BaseModel):
     keywords_to_add: list[str]
     budget_reallocation: dict[str, Decimal]
     projected_acos: Decimal
+
+
+class BidAdjustmentItem(BaseModel):
+    """A single keyword bid adjustment to apply."""
+
+    campaign_keyword_id: uuid.UUID
+    ad_group_id: str
+    keyword_id: str
+    current_bid: Decimal
+    new_bid: Decimal
+
+
+class BidExecutionRequest(BaseModel):
+    adjustments: list[BidAdjustmentItem]
+
+
+class BidExecutionResult(BaseModel):
+    task_id: str
+    adjustments_queued: int
+
+
+class CampaignKeywordRead(BaseModel):
+    model_config = {"from_attributes": True}
+
+    id: uuid.UUID
+    campaign_id: uuid.UUID
+    keyword_text: str
+    match_type: str
+    bid: Decimal | None
+    status: str
+    spend: Decimal
+    sales: Decimal
+    clicks: int
+    impressions: int
