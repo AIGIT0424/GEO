@@ -28,12 +28,16 @@ async def fetch_product_from_amazon(
 async def sync_product(
     db: AsyncSession, user_id, asin: str, marketplace_id: str
 ) -> Product:
-    sp = SPAPIClient(marketplace_id=marketplace_id)
-    data = await fetch_product_from_amazon(asin, marketplace_id, sp)
-
     stmt = select(Product).where(Product.asin == asin, Product.user_id == user_id)
     result = await db.execute(stmt)
     product = result.scalar_one_or_none()
+
+    # Try to enrich from Amazon; fall back to ASIN-only record when creds are absent
+    try:
+        sp = SPAPIClient(marketplace_id=marketplace_id)
+        data = await fetch_product_from_amazon(asin, marketplace_id, sp)
+    except Exception:
+        data = {"asin": asin, "marketplace_id": marketplace_id}
 
     if product is None:
         product = Product(user_id=user_id, **data)

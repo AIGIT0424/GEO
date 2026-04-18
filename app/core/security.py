@@ -1,38 +1,21 @@
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
+import bcrypt
 import jwt
 
 from app.core.config import settings
 
 ALGORITHM = "HS256"
 
-try:
-    from passlib.context import CryptContext
 
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def hash_password(password: str) -> str:
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(password.encode(), salt).decode()
 
-    def hash_password(password: str) -> str:
-        return pwd_context.hash(password)
 
-    def verify_password(plain_password: str, hashed_password: str) -> bool:
-        return pwd_context.verify(plain_password, hashed_password)
-
-except Exception:
-    import hashlib
-    import hmac
-    import os
-
-    def hash_password(password: str) -> str:  # type: ignore[misc]
-        salt = os.urandom(16).hex()
-        h = hmac.new(password.encode(), salt.encode(), hashlib.sha256).hexdigest()
-        return f"{salt}${h}"
-
-    def verify_password(plain_password: str, hashed_password: str) -> bool:  # type: ignore[misc]
-        salt, h = hashed_password.split("$", 1)
-        return hmac.compare_digest(
-            hmac.new(plain_password.encode(), salt.encode(), hashlib.sha256).hexdigest(), h
-        )
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
 
 
 def create_access_token(subject: Any) -> str:
